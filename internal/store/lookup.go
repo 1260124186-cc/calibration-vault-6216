@@ -9,7 +9,8 @@ func (m *Memory) Get(sampleID string) (domain.Sample, error) {
 	if !ok {
 		return domain.Sample{}, domain.ErrSampleNotFound
 	}
-	return sample, nil
+	// 返回克隆，防止调用方修改返回值污染存储
+	return sample.Clone(), nil
 }
 
 func (m *Memory) Timeline(sampleID string) ([]domain.Event, error) {

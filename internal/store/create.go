@@ -8,7 +8,8 @@ func (m *Memory) Create(sample domain.Sample, event domain.Event) error {
 	if m.contains(sample.SampleID) {
 		return domain.ErrDuplicateSample
 	}
-	m.samples[sample.SampleID] = sample
+	// 入库时克隆，避免外部传入的 Tags 切片与存储共享底层数组
+	m.samples[sample.SampleID] = sample.Clone()
 	m.events[sample.SampleID] = []domain.Event{event.Clone()}
 	return nil
 }

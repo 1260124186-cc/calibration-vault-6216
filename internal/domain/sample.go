@@ -54,17 +54,18 @@ func NewSample(id string, input IntakeInput, now time.Time) Sample {
 }
 
 func (s Sample) Clone() Sample {
-	copy := s
-	copy.Tags = s.Tags
+	clone := s
+	// Tags 是切片，复制结构体只复制切片头，底层数组仍共享，必须防御性拷贝
+	clone.Tags = append([]string(nil), s.Tags...)
 	if s.Review != nil {
 		review := *s.Review
-		copy.Review = &review
+		clone.Review = &review
 	}
 	if s.Release != nil {
 		release := *s.Release
-		copy.Release = &release
+		clone.Release = &release
 	}
-	return copy
+	return clone
 }
 
 func (s Sample) IsOpen() bool {
