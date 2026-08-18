@@ -8,9 +8,6 @@ import (
 )
 
 func (s *Service) Review(ctx context.Context, sampleID string, input domain.ReviewInput) (domain.Sample, error) {
-	if err := ctx.Err(); err != nil {
-		return domain.Sample{}, err
-	}
 	sampleID = strings.TrimSpace(sampleID)
 	input.Reviewer = strings.TrimSpace(input.Reviewer)
 	input.Note = strings.TrimSpace(input.Note)

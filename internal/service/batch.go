@@ -10,9 +10,6 @@ import (
 )
 
 func (s *Service) BatchIntake(ctx context.Context, input domain.BatchIntakeInput) (domain.BatchIntakeResult, error) {
-	if err := ctx.Err(); err != nil {
-		return domain.BatchIntakeResult{}, err
-	}
 	input.BatchReference = strings.TrimSpace(input.BatchReference)
 	for index := range input.Items {
 		input.Items[index].SampleID = strings.TrimSpace(input.Items[index].SampleID)
