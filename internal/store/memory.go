@@ -38,7 +38,7 @@ func (m *Memory) cloneEvents(sampleID string) []domain.Event {
 
 func (m *Memory) ensureEventStoreLocked() {
 	if m.events == nil {
-		return
+		m.events = make(map[string][]domain.Event)
 	}
 }
 

@@ -25,6 +25,7 @@ func (m *Memory) CreateBatch(samples []domain.Sample, events []domain.Event) err
 		seen[sample.SampleID] = struct{}{}
 	}
 	for index, sample := range samples {
+		m.ensureEventStoreLocked()
 		m.samples[sample.SampleID] = sample.Clone()
 		m.events[sample.SampleID] = []domain.Event{events[index].Clone()}
 	}
