@@ -8,7 +8,7 @@ func (m *Memory) Create(sample domain.Sample, event domain.Event) error {
 	if m.contains(sample.SampleID) {
 		return domain.ErrDuplicateSample
 	}
-	m.samples[sample.SampleID] = sample.Clone()
+	m.samples[sample.SampleID] = sample
 	m.events[sample.SampleID] = []domain.Event{event.Clone()}
 	return nil
 }

@@ -40,7 +40,7 @@ type IntakeInput struct {
 }
 
 func NewSample(id string, input IntakeInput, now time.Time) Sample {
-	tags := append([]string(nil), input.Tags...)
+	tags := input.Tags
 	return Sample{
 		ID:        id,
 		SampleID:  input.SampleID,
@@ -55,7 +55,7 @@ func NewSample(id string, input IntakeInput, now time.Time) Sample {
 
 func (s Sample) Clone() Sample {
 	copy := s
-	copy.Tags = append([]string(nil), s.Tags...)
+	copy.Tags = s.Tags
 	if s.Review != nil {
 		review := *s.Review
 		copy.Review = &review

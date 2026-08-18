@@ -40,7 +40,7 @@ func (m *Memory) cloneSamples(filter domain.Filter) []domain.Sample {
 	items := make([]domain.Sample, 0, len(m.samples))
 	for _, sample := range m.samples {
 		if filter.Matches(sample) {
-			items = append(items, sample.Clone())
+			items = append(items, sample)
 		}
 	}
 	domain.SortSamples(items)
