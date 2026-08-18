@@ -1,0 +1,35 @@
+{
+  "shape": "cli",
+  "cli": {
+    "command": "go run ./cmd/calibrationd describe",
+    "input": "operator\n",
+    "expect_output": "ready for operator",
+    "timeout_seconds": 45
+  },
+  "workflow_checks": [
+    {
+      "workflow_id": "intake-sample",
+      "command": "go run ./cmd/calibrationd check-intake",
+      "expect_output": "created pending_review",
+      "input": ""
+    },
+    {
+      "workflow_id": "review-sample",
+      "command": "go run ./cmd/calibrationd check-review",
+      "expect_output": "reviewed approved",
+      "input": ""
+    },
+    {
+      "workflow_id": "release-sample",
+      "command": "go run ./cmd/calibrationd check-release",
+      "expect_output": "released lab-west",
+      "input": ""
+    },
+    {
+      "workflow_id": "query-timeline",
+      "command": "go run ./cmd/calibrationd check-query",
+      "expect_output": "timeline events=3",
+      "input": ""
+    }
+  ]
+}

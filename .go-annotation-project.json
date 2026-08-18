@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "name": "calibration-vault",
+  "summary": "本地校准样本登记、审核、放行与事件追踪服务",
+  "user_roles": [
+    "接样员",
+    "复核员",
+    "放行员"
+  ],
+  "entities": [
+    "sample",
+    "review",
+    "release",
+    "event"
+  ],
+  "workflows": [
+    {
+      "id": "intake-sample",
+      "name": "登记样本",
+      "actor": "接样员",
+      "entry": "POST /v1/intakes",
+      "steps": [
+        "校验样本编号、来源、优先级和标签",
+        "创建待复核样本并追加接收事件"
+      ],
+      "success": "返回 201 和待复核样本",
+      "failure": "重复编号或非法字段返回 4xx",
+      "verification": "向登记接口提交样本并查询样本详情"
+    },
+    {
+      "id": "review-sample",
+      "name": "审核样本",
+      "actor": "复核员",
+      "entry": "POST /v1/intakes/{id}/review",
+      "steps": [
+        "确认样本存在且处于待复核状态",
+        "记录审核结论并追加审核事件"
+      ],
+      "success": "返回审核后的批准或退回样本",
+      "failure": "不存在、重复审核或非法结论返回 4xx",
+      "verification": "登记样本后提交审核并检查状态与事件数量"
+    },
+    {
+      "id": "release-sample",
+      "name": "放行样本",
+      "actor": "放行员",
+      "entry": "POST /v1/intakes/{id}/release",
+      "steps": [
+        "确认样本已经批准且目的地有效",
+        "创建放行记录并追加放行事件"
+      ],
+      "success": "返回放行后的样本",
+      "failure": "未批准、已放行或目的地非法返回 4xx",
+      "verification": "完成登记和审核后放行样本并查询时间线"
+    },
+    {
+      "id": "query-timeline",
+      "name": "查询与追踪",
+      "actor": "接样员",
+      "entry": "GET /v1/intakes 与 GET /v1/intakes/{id}/timeline",
+      "steps": [
+        "按状态或优先级筛选样本",
+        "按发生顺序返回不可变事件时间线"
+      ],
+      "success": "返回稳定排序的样本列表或事件列表",
+      "failure": "非法筛选值或不存在样本返回 4xx",
+      "verification": "登记样本后按筛选条件查询并读取时间线"
+    }
+  ],
+  "module_plan": [
+    {
+      "package": "internal/domain",
+      "workflow_ids": [
+        "intake-sample",
+        "review-sample",
+        "release-sample",
+        "query-timeline"
+      ]
+    },
+    {
+      "package": "internal/store",
+      "workflow_ids": [
+        "intake-sample",
+        "review-sample",
+        "release-sample",
+        "query-timeline"
+      ]
+    },
+    {
+      "package": "internal/service",
+      "workflow_ids": [
+        "intake-sample",
+        "review-sample",
+        "release-sample",
+        "query-timeline"
+      ]
+    },
+    {
+      "package": "internal/httpapi",
+      "workflow_ids": [
+        "intake-sample",
+        "review-sample",
+        "release-sample",
+        "query-timeline"
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "name": "health endpoint",
+      "workflow_ids": [
+        "query-timeline"
+      ]
+    },
+    {
+      "name": "sample intake API",
+      "workflow_ids": [
+        "intake-sample"
+      ]
+    },
+    {
+      "name": "review API",
+      "workflow_ids": [
+        "review-sample"
+      ]
+    },
+    {
+      "name": "release API",
+      "workflow_ids": [
+        "release-sample"
+      ]
+    },
+    {
+      "name": "query and timeline API",
+      "workflow_ids": [
+        "query-timeline"
+      ]
+    }
+  ]
+}
