@@ -40,7 +40,8 @@ type IntakeInput struct {
 }
 
 func NewSample(id string, input IntakeInput, now time.Time) Sample {
-	tags := input.Tags
+	// 拷贝 Tags，避免复用调用方传入的 slice 导致后续被外部修改污染样本
+	tags := append([]string(nil), input.Tags...)
 	return Sample{
 		ID:        id,
 		SampleID:  input.SampleID,
@@ -54,18 +55,18 @@ func NewSample(id string, input IntakeInput, now time.Time) Sample {
 }
 
 func (s Sample) Clone() Sample {
-	clone := s
-	// Tags 是切片，复制结构体只复制切片头，底层数组仍共享，必须防御性拷贝
-	clone.Tags = append([]string(nil), s.Tags...)
+	copy := s
+	// Tags 是 slice，必须深拷贝底层数组，否则调用方修改返回值会污染仓储里的样本
+	copy.Tags = append([]string(nil), s.Tags...)
 	if s.Review != nil {
 		review := *s.Review
-		clone.Review = &review
+		copy.Review = &review
 	}
 	if s.Release != nil {
 		release := *s.Release
-		clone.Release = &release
+		copy.Release = &release
 	}
-	return clone
+	return copy
 }
 
 func (s Sample) IsOpen() bool {

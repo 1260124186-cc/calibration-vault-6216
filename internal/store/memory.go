@@ -40,7 +40,6 @@ func (m *Memory) cloneSamples(filter domain.Filter) []domain.Sample {
 	items := make([]domain.Sample, 0, len(m.samples))
 	for _, sample := range m.samples {
 		if filter.Matches(sample) {
-			// 克隆切片字段，避免返回值与存储共享底层数组
 			items = append(items, sample.Clone())
 		}
 	}
