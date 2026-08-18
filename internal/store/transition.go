@@ -20,7 +20,7 @@ func (m *Memory) ApplyReview(sampleID string, review domain.Review, event domain
 	reviewCopy := review.Clone()
 	sample.Review = &reviewCopy
 	sample.UpdatedAt = review.ReviewedAt
-	if domain.ReviewTarget(review.Decision) == domain.StatusApproved {
+	if review.Accepted() {
 		sample.Status = domain.StatusApproved
 	} else {
 		sample.Status = domain.StatusRejected

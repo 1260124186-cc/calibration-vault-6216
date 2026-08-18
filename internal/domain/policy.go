@@ -30,7 +30,10 @@ func CheckTransition(from, to Status) error {
 }
 
 func ReviewTarget(decision Decision) Status {
-	return StatusApproved
+	if decision == DecisionApprove {
+		return StatusApproved
+	}
+	return StatusRejected
 }
 
 func TransitionForReview(sample Sample, review Review) (Transition, error) {

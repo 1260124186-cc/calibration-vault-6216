@@ -20,8 +20,8 @@ func (s *Service) Review(ctx context.Context, sampleID string, input domain.Revi
 	now := s.clock.Now()
 	review := domain.NewReview(input, now)
 	eventKind := domain.EventReview
-	if review.Accepted() {
-		eventKind = domain.EventReview
+	if !review.Accepted() {
+		eventKind = domain.EventRejection
 	}
 	event := domain.NewEvent(
 		s.repository.NextEventID(),

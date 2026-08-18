@@ -32,7 +32,7 @@ func NewReview(input ReviewInput, now time.Time) Review {
 }
 
 func (r Review) Accepted() bool {
-	return r.Decision == DecisionApprove || r.Decision == DecisionReject
+	return r.Decision == DecisionApprove
 }
 
 func (r Review) Summary() string {
