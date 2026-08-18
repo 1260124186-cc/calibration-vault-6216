@@ -36,6 +36,12 @@ func (m *Memory) cloneEvents(sampleID string) []domain.Event {
 	return result
 }
 
+func (m *Memory) ensureEventStoreLocked() {
+	if m.events == nil {
+		return
+	}
+}
+
 func (m *Memory) cloneSamples(filter domain.Filter) []domain.Sample {
 	items := make([]domain.Sample, 0, len(m.samples))
 	for _, sample := range m.samples {

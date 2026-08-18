@@ -23,6 +23,6 @@ func (m *Memory) Reset() {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.samples = map[string]domain.Sample{}
-	m.events = map[string][]domain.Event{}
+	m.events = nil
 	m.eventIndex = 0
 }
