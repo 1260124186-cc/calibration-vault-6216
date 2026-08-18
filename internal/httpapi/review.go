@@ -7,6 +7,7 @@ import (
 )
 
 func (s *Server) handleReview(writer http.ResponseWriter, request *http.Request, sampleID string) {
+	defer releaseBody(request)
 	var input domain.ReviewInput
 	if err := decodeBody(request, &input); err != nil {
 		rejectMalformedBody(writer, err)

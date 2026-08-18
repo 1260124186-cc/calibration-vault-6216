@@ -7,6 +7,7 @@ import (
 )
 
 func (s *Server) handleBatchIntake(writer http.ResponseWriter, request *http.Request) {
+	defer releaseBody(request)
 	if request.Method != http.MethodPost {
 		writeProblem(writer, http.StatusMethodNotAllowed, "method_not_allowed", "use POST")
 		return

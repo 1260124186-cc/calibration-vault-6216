@@ -7,6 +7,7 @@ import (
 )
 
 func (s *Server) handleRelease(writer http.ResponseWriter, request *http.Request, sampleID string) {
+	defer releaseBody(request)
 	var input domain.ReleaseInput
 	if err := decodeBody(request, &input); err != nil {
 		rejectMalformedBody(writer, err)

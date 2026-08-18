@@ -22,6 +22,10 @@ func decodeBody(request *http.Request, target any) error {
 	return nil
 }
 
+func releaseBody(request *http.Request) {
+	_ = request.Body.Close()
+}
+
 func rejectMalformedBody(writer http.ResponseWriter, err error) {
 	writeProblem(writer, http.StatusBadRequest, "invalid_json", err.Error())
 }

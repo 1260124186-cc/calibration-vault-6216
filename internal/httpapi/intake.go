@@ -20,6 +20,7 @@ func (s *Server) handleIntakes(writer http.ResponseWriter, request *http.Request
 }
 
 func (s *Server) handleCreateIntake(writer http.ResponseWriter, request *http.Request) {
+	defer releaseBody(request)
 	var input domain.IntakeInput
 	if err := decodeBody(request, &input); err != nil {
 		rejectMalformedBody(writer, err)
