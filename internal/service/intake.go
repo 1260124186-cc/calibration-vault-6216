@@ -8,6 +8,9 @@ import (
 )
 
 func (s *Service) Intake(ctx context.Context, input domain.IntakeInput) (domain.Sample, error) {
+	if err := ctx.Err(); err != nil {
+		return domain.Sample{}, err
+	}
 	input.SampleID = strings.TrimSpace(input.SampleID)
 	input.Source = strings.TrimSpace(input.Source)
 	input.Tags = domain.NormalizeTags(input.Tags)

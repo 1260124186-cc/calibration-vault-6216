@@ -8,6 +8,9 @@ import (
 )
 
 func (s *Service) Release(ctx context.Context, sampleID string, input domain.ReleaseInput) (domain.Sample, error) {
+	if err := ctx.Err(); err != nil {
+		return domain.Sample{}, err
+	}
 	sampleID = strings.TrimSpace(sampleID)
 	input.Operator = strings.TrimSpace(input.Operator)
 	input.Destination = strings.TrimSpace(input.Destination)
