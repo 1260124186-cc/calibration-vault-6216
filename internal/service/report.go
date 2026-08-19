@@ -23,7 +23,7 @@ func (s *Service) OperationsReport(ctx context.Context) (OperationsReport, error
 	}
 	for _, sample := range all {
 		switch {
-		case sample.Priority == domain.PriorityUrgent && sample.IsOpen():
+		case sample.Priority == domain.PriorityUrgent && sample.Status == domain.StatusApproved:
 			report.UrgentSamples = append(report.UrgentSamples, sample)
 		case sample.Status == domain.StatusPendingReview:
 			report.PendingReview = append(report.PendingReview, sample)

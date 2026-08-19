@@ -68,7 +68,7 @@ func (s Sample) Clone() Sample {
 }
 
 func (s Sample) IsOpen() bool {
-	return s.Status == StatusPendingReview || s.Status == StatusApproved
+	return s.Status == StatusApproved
 }
 
 func (s Sample) CanReview() bool {
