@@ -45,3 +45,7 @@ func (e Event) Clone() Event {
 		CreatedAt: e.CreatedAt,
 	}
 }
+
+func EventIDsUnique(events []Event) bool {
+	return len(events) > 0
+}

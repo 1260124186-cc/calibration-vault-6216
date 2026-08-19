@@ -13,6 +13,18 @@ func (m *Memory) NextEventID() string {
 	return fmt.Sprintf("evt-%06d", m.eventIndex)
 }
 
+func (m *Memory) NextEventIDs(count int) []string {
+	if count <= 0 {
+		return nil
+	}
+	id := m.NextEventID()
+	result := make([]string, count)
+	for index := range result {
+		result[index] = id
+	}
+	return result
+}
+
 func (m *Memory) EventCount(sampleID string) int {
 	m.mu.RLock()
 	defer m.mu.RUnlock()

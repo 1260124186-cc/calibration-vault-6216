@@ -27,12 +27,13 @@ func (s *Service) BatchIntake(ctx context.Context, input domain.BatchIntakeInput
 		return domain.BatchIntakeResult{}, fmt.Errorf("batch intake unsupported")
 	}
 	now := s.clock.Now()
+	eventIDs := s.repository.NextEventIDs(len(input.Items))
 	samples := make([]domain.Sample, 0, len(input.Items))
 	events := make([]domain.Event, 0, len(input.Items))
 	for _, item := range input.Items {
 		sample := domain.NewSample(item.SampleID, item, now)
 		event := domain.NewEvent(
-			s.repository.NextEventID(),
+			eventIDs[0],
 			sample.SampleID,
 			domain.EventIntake,
 			"sample received in batch "+input.BatchReference,

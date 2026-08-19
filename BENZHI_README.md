@@ -1,4 +1,4 @@
-# calibration-vault-6216 Docker 交付说明
+# calibration-vault__009 Docker 交付说明
 
 ## 项目概览
 - 校准样本流转中心是一个使用 Go 1.26 编写的本地业务程序，帮助接样员、复核员和放行员管理样本从登记到放行的状态流转，并提供可追踪的事件时间线。程序同时提供 HTTP 适配层和用于本地流程检查的 CLI 入口。
@@ -20,8 +20,8 @@ go run ./cmd/calibrationd
 ## Docker 构建
 
 ```bash
-./build_benzhi_docker.sh calibration-vault-6216-benzhi linux/amd64
-docker run --rm -it calibration-vault-6216-benzhi bash
+./build_benzhi_docker.sh calibration-vault__009-benzhi linux/amd64
+docker run --rm -it calibration-vault__009-benzhi bash
 ```
 
 ## 环境

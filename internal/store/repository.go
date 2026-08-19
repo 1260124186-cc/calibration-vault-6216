@@ -12,5 +12,6 @@ type Repository interface {
 	ApplyReview(sampleID string, review domain.Review, event domain.Event) (domain.Sample, error)
 	ApplyRelease(sampleID string, release domain.Release, event domain.Event) (domain.Sample, error)
 	NextEventID() string
+	NextEventIDs(count int) []string
 	Summary() domain.Summary
 }
