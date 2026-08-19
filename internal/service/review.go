@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"example.com/calibration-vault/internal/domain"
@@ -15,7 +16,7 @@ func (s *Service) Review(ctx context.Context, sampleID string, input domain.Revi
 	input.Reviewer = strings.TrimSpace(input.Reviewer)
 	input.Note = strings.TrimSpace(input.Note)
 	if err := domain.ValidateReview(input); err != nil {
-		return domain.Sample{}, err
+		return domain.Sample{}, fmt.Errorf("validate review: %v", err)
 	}
 	now := s.clock.Now()
 	review := domain.NewReview(input, now)
