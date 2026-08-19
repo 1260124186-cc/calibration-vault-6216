@@ -68,7 +68,8 @@ func (s Sample) Clone() Sample {
 }
 
 func (s Sample) IsOpen() bool {
-	return s.Status == StatusApproved
+	// 开放流转状态：尚未到达终态（已退回或已放行），包含待复核与已批准
+	return s.Status == StatusPendingReview || s.Status == StatusApproved
 }
 
 func (s Sample) CanReview() bool {

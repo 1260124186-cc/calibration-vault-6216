@@ -22,10 +22,11 @@ func (s *Service) OperationsReport(ctx context.Context) (OperationsReport, error
 		Metrics: domain.BuildMetrics(all, s.clock.Now()),
 	}
 	for _, sample := range all {
-		switch {
-		case sample.Priority == domain.PriorityUrgent && sample.Status == domain.StatusApproved:
+		// 紧急样本只要仍处于开放流转状态（待复核或已批准）就纳入，确保值班人员能看到刚登记的高优先级接样
+		if sample.Priority == domain.PriorityUrgent && sample.IsOpen() {
 			report.UrgentSamples = append(report.UrgentSamples, sample)
-		case sample.Status == domain.StatusPendingReview:
+		}
+		if sample.Status == domain.StatusPendingReview {
 			report.PendingReview = append(report.PendingReview, sample)
 		}
 	}

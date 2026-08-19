@@ -21,7 +21,7 @@ func BuildMetrics(samples []Sample, now time.Time) Metrics {
 	}
 	open := make([]Sample, 0)
 	for _, sample := range samples {
-		if sample.Status == StatusApproved {
+		if sample.IsOpen() {
 			open = append(open, sample)
 		}
 	}
