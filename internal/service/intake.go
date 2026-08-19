@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"example.com/calibration-vault/internal/domain"
@@ -16,7 +15,7 @@ func (s *Service) Intake(ctx context.Context, input domain.IntakeInput) (domain.
 	input.Source = strings.TrimSpace(input.Source)
 	input.Tags = domain.NormalizeTags(input.Tags)
 	if err := domain.ValidateIntake(input); err != nil {
-		return domain.Sample{}, fmt.Errorf("validate intake: %v", err)
+		return domain.Sample{}, err
 	}
 	now := s.clock.Now()
 	sample := domain.NewSample(input.SampleID, input, now)

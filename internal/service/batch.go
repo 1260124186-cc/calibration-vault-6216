@@ -20,7 +20,7 @@ func (s *Service) BatchIntake(ctx context.Context, input domain.BatchIntakeInput
 		input.Items[index].Tags = domain.NormalizeTags(input.Items[index].Tags)
 	}
 	if err := domain.ValidateBatchIntake(input); err != nil {
-		return domain.BatchIntakeResult{}, fmt.Errorf("validate batch: %v", err)
+		return domain.BatchIntakeResult{}, err
 	}
 	batchRepository, ok := s.repository.(store.BatchRepository)
 	if !ok {
