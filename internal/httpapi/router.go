@@ -1,7 +1,6 @@
 package httpapi
 
 import (
-	"context"
 	"net/http"
 	"strings"
 
@@ -31,7 +30,8 @@ func (s *Server) register() {
 }
 
 func (s *Server) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	s.mux.ServeHTTP(writer, request.WithContext(context.Background()))
+	// 保留原始请求 context，使客户端断连或取消的信号能沿调用链传递到业务层
+	s.mux.ServeHTTP(writer, request)
 }
 
 func (s *Server) handleIntakeRoute(writer http.ResponseWriter, request *http.Request) {

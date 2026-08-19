@@ -1,12 +1,11 @@
 package httpapi
 
 import (
-	"context"
 	"net/http"
 )
 
 func (s *Server) handleTimeline(writer http.ResponseWriter, request *http.Request, sampleID string) {
-	events, err := s.service.Timeline(context.Background(), sampleID)
+	events, err := s.service.Timeline(request.Context(), sampleID)
 	if err != nil {
 		writeServiceError(writer, err)
 		return

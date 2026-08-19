@@ -30,6 +30,10 @@ func (s *Service) BatchIntake(ctx context.Context, input domain.BatchIntakeInput
 	samples := make([]domain.Sample, 0, len(input.Items))
 	events := make([]domain.Event, 0, len(input.Items))
 	for _, item := range input.Items {
+		// 批量处理过程中检查取消信号，客户端取消后尽快返回，不再构造剩余样本
+		if err := ctx.Err(); err != nil {
+			return domain.BatchIntakeResult{}, err
+		}
 		sample := domain.NewSample(item.SampleID, item, now)
 		event := domain.NewEvent(
 			s.repository.NextEventID(),
