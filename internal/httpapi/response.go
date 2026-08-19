@@ -36,7 +36,7 @@ func writeServiceError(writer http.ResponseWriter, err error) {
 		})
 	case errors.Is(err, domain.ErrDuplicateSample):
 		writeProblem(writer, http.StatusConflict, "duplicate_sample", err.Error())
-	case errors.Is(err, domain.ErrSampleNotFound):
+	case errors.Is(err, domain.ErrSampleNotFound), errors.Is(err, domain.ErrEventNotFound):
 		writeProblem(writer, http.StatusNotFound, "not_found", err.Error())
 	case errors.Is(err, domain.ErrInvalidState):
 		writeProblem(writer, http.StatusConflict, "invalid_state", err.Error())
