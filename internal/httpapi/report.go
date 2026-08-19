@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"context"
 	"net/http"
 	"strings"
 )
@@ -10,7 +11,7 @@ func (s *Server) handleOperationsReport(writer http.ResponseWriter, request *htt
 		writeProblem(writer, http.StatusMethodNotAllowed, "method_not_allowed", "use GET")
 		return
 	}
-	report, err := s.service.OperationsReport(request.Context())
+	report, err := s.service.OperationsReport(context.Background())
 	if err != nil {
 		writeServiceError(writer, err)
 		return

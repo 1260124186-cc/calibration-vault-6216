@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
@@ -30,7 +31,7 @@ func (s *Server) register() {
 }
 
 func (s *Server) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	s.mux.ServeHTTP(writer, request)
+	s.mux.ServeHTTP(writer, request.WithContext(context.Background()))
 }
 
 func (s *Server) handleIntakeRoute(writer http.ResponseWriter, request *http.Request) {
