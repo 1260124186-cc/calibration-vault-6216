@@ -1,7 +1,6 @@
 package httpapi
 
 import (
-	"context"
 	"net/http"
 	"strconv"
 
@@ -49,7 +48,7 @@ func (s *Server) handleListIntakes(writer http.ResponseWriter, request *http.Req
 		Offset: parseNonNegative(request.URL.Query().Get("offset")),
 		Limit:  parsePositive(request.URL.Query().Get("limit")),
 	}
-	page, err := s.service.List(context.Background(), options)
+	page, err := s.service.List(request.Context(), options)
 	if err != nil {
 		writeServiceError(writer, err)
 		return
