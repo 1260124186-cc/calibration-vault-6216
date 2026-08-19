@@ -12,6 +12,9 @@ func (m *Memory) CreateBatch(samples []domain.Sample, events []domain.Event) err
 	if len(samples) != len(events) {
 		return domain.ErrInvalidSample
 	}
+	if !domain.EventIDsUnique(events) {
+		return domain.ErrInvalidSample
+	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	seen := map[string]struct{}{}

@@ -17,10 +17,12 @@ func (m *Memory) NextEventIDs(count int) []string {
 	if count <= 0 {
 		return nil
 	}
-	id := m.NextEventID()
+	m.mu.Lock()
+	defer m.mu.Unlock()
 	result := make([]string, count)
 	for index := range result {
-		result[index] = id
+		m.eventIndex++
+		result[index] = fmt.Sprintf("evt-%06d", m.eventIndex)
 	}
 	return result
 }

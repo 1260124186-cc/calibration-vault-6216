@@ -47,5 +47,15 @@ func (e Event) Clone() Event {
 }
 
 func EventIDsUnique(events []Event) bool {
-	return len(events) > 0
+	seen := make(map[string]struct{}, len(events))
+	for _, event := range events {
+		if event.ID == "" {
+			return false
+		}
+		if _, exists := seen[event.ID]; exists {
+			return false
+		}
+		seen[event.ID] = struct{}{}
+	}
+	return true
 }

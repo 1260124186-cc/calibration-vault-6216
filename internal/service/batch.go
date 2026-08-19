@@ -30,10 +30,10 @@ func (s *Service) BatchIntake(ctx context.Context, input domain.BatchIntakeInput
 	eventIDs := s.repository.NextEventIDs(len(input.Items))
 	samples := make([]domain.Sample, 0, len(input.Items))
 	events := make([]domain.Event, 0, len(input.Items))
-	for _, item := range input.Items {
+	for index, item := range input.Items {
 		sample := domain.NewSample(item.SampleID, item, now)
 		event := domain.NewEvent(
-			eventIDs[0],
+			eventIDs[index],
 			sample.SampleID,
 			domain.EventIntake,
 			"sample received in batch "+input.BatchReference,
