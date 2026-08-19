@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	"example.com/calibration-vault/internal/domain"
 )
@@ -31,7 +32,11 @@ func (s *Service) Timeline(ctx context.Context, sampleID string) ([]domain.Event
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	return s.repository.Timeline(sampleID)
+	events, err := s.repository.Timeline(sampleID)
+	if err != nil {
+		return nil, fmt.Errorf("timeline query: %v", err)
+	}
+	return events, nil
 }
 
 func (s *Service) Summary(ctx context.Context) (domain.Summary, error) {

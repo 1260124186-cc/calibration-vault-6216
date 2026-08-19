@@ -1,11 +1,14 @@
 package httpapi
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 func (s *Server) handleTimeline(writer http.ResponseWriter, request *http.Request, sampleID string) {
 	events, err := s.service.Timeline(request.Context(), sampleID)
 	if err != nil {
-		writeServiceError(writer, err)
+		writeServiceError(writer, fmt.Errorf("timeline endpoint: %v", err))
 		return
 	}
 	writeJSON(writer, http.StatusOK, map[string]any{
