@@ -45,5 +45,5 @@ func NormalizeStatus(raw string) Status {
 }
 
 func IsActionable(sample Sample) bool {
-	return sample.Status == StatusApproved
+	return sample.Status == StatusPendingReview || sample.Status == StatusApproved
 }
